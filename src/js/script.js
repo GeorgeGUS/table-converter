@@ -9,27 +9,6 @@ if (!Array.prototype.last) {
   }
 }
 
-// Функция конвертации данных из формата csv в json
-function csvJSON (csv) {
-  const lines = csv.split('\n')
-
-  const result = []
-
-  const headers = lines[0].split(',')
-  lines.splice(0, 1)
-  lines.forEach(function (line) {
-    const obj = {}
-    const currentline = line.split(',')
-    headers.forEach(function (header, i) {
-      obj[header] = currentline[i]
-    })
-    result.push(obj)
-  })
-
-  return result // JavaScript object
-  // return JSON.stringify(result); //JSON
-}
-
 // Временную строку в число секунд
 function timestrToSec (timestr) {
   const parts = timestr.split(':')
@@ -99,6 +78,7 @@ function getHourOnNextDayStart (start, end) {
 }
 
 function copyTable (id) {
+  window.getSelection().removeAllRanges()
   const table = document.getElementById(id)
   const range = document.createRange()
   range.selectNode(table)
@@ -121,7 +101,7 @@ function copyOutputTable () {
 
 // ===== ФУНКЦИИ ОТРИСОВКИ ТАБЛИЦ =====
 function renderInputTable (data) {
-  const table = d3.select('#input-table')
+  const table = d3.select('#input-table').html('')
   const thead = table.append('thead')
   const tbody = table.append('tbody')
   const tfoot = table.append('tfoot')
@@ -249,14 +229,19 @@ function renderOutputPable (data, daysInMonth, isFull = true) {
 }
 // ====================================
 
-inputData().then(data => {
+function getDaysInMonth (data) {
+  const currDate = data[0].date.split('.')
+  const [currMonth, currYear] = [currDate[1], currDate[2]]
+  return new Date(currYear, currMonth, 0).getDate()
+}
+
+// inputData().then(data => {
+function convertData (data) {
   // ===== ОТРИСОВКА ТАБЛИЦЫ С ВХОДНЫМИ ДАННЫМИ =====
   renderInputTable(data)
   // ================================================
 
-  const currDate = data[0].date.split('.')
-  const [currMonth, currYear] = [currDate[1], currDate[2]]
-  const DAYS_IN_MONTH = new Date(currYear, currMonth, 0).getDate()
+  const DAYS_IN_MONTH = getDaysInMonth(data)
 
   // Создадим промежуточный объект с городами, в которых к каждой дате
   // прикреплен массив с началом и продолжительностью остановок за данную дату.
@@ -358,4 +343,34 @@ inputData().then(data => {
     const checked = d3.event.target.checked
     renderOutputPable(outputData, DAYS_IN_MONTH, checked)
   })
+}
+
+// Функция конвертации данных из формата csv в json
+function csvJSON (csv, divider = ';') {
+  // Забираем все строки, кроме пустых
+  const lines = csv.split('\n').filter(str => `${str} `.trim() !== '')
+
+  const result = []
+
+  const headers = lines[0].split(divider).map(d => d.trim())
+  lines.splice(0, 1)
+  lines.forEach(function (line) {
+    const obj = {}
+    const currentline = line.split(divider)
+    headers.forEach(function (header, i) {
+      obj[header] = currentline[i].trim()
+    })
+    result.push(obj)
+  })
+
+  return result // JavaScript object
+  // return JSON.stringify(result); //JSON
+}
+
+const inputField = d3.select('#data-input')
+
+d3.select('#data-form').on('submit', function () {
+  d3.event.preventDefault()
+  const inputData = inputField.property('value')
+  convertData(csvJSON(inputData))
 })
