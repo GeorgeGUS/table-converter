@@ -1,0 +1,33 @@
+.tables {
+	display: flex;
+}
+
+table {
+	border-collapse: collapse;
+	border: 2px solid;
+}
+
+th, 
+td {
+	padding: 2px 4px;
+	border: 1px solid;
+}
+
+#input-table {
+	display: none;
+	margin-right: 20px;
+}
+
+#input-table-switch:checked ~ .tables #input-table {
+	display: table;
+}
+
+#input-table th,
+#input-table td {
+	min-width: 70px;
+}
+
+.buttons {
+	margin-left: 20px;
+	display: flex;
+}
