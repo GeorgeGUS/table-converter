@@ -105,7 +105,6 @@ function renderInputTable (data) {
   const thead = table.append('thead')
   const tbody = table.append('tbody')
   const tfoot = table.append('tfoot')
-  console.dir(data)
   const columns = Object.keys(data[0])
   
   const totalHours = data
