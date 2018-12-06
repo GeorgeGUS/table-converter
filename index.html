@@ -9,24 +9,33 @@
 
 <body>
 	<input type="checkbox" id="form-switch" checked>
-  <label for="form-switch">Показать/скрыть форму ввода данных</label>
-  <span class="dividers">
+	<label for="form-switch">Показать/скрыть форму ввода данных</label>
+	<span class="dividers">
 
-  </span>
+	</span>
 	<form name="dataForm" id="data-form" class="form" method="get">
+		<p>
+      Выберите тип разделителя
+			<select name="divider" id="data-divider" required>
+				<option></option>
+				<option value="\t">\t (tab)</option>
+				<option value=";">; (semicolon)</option>
+				<option value=",">, (comma)</option>
+			</select>
+		</p>
 		<div class="row">
 			<textarea id="data-input" class="form-input" cols="30" rows="10" placeholder="Вставьте данные в формате CSV"
 			 required></textarea>
 			<div class="example">
-        <h2  class="example-title">Пример входных данных</h2>
-        <p class="example-text">
-            city;date;begin;duration <br>
-            Любытино;02.11.2018;12:39:00;0:10:00 <br>
-            Новинка;04.11.2018;22:36:00;2:25:00 <br>
-            Воронино;07.11.2018;11:50:00;1:54:00 <br>
-            Яжелбицы;07.11.2018;15:22:00;0:29:00 <br>
-        </p>
-        <p>Не забудьте указать тип разделителя «;» (точка с запятой)!</p>
+				<h2 class="example-title">Пример входных данных</h2>
+				<p class="example-text">
+					city;date;begin;duration<br>
+					Любытино;02.11.2018;12:39:00;0:10:00<br>
+					Новинка;04.11.2018;22:36:00;2:25:00<br>
+					Воронино;07.11.2018;11:50:00;1:54:00<br>
+					Яжелбицы;07.11.2018;15:22:00;0:29:00<br>
+				</p>
+				<p>Не забудьте указать правильный тип разделителя!</p>
 			</div>
 		</div>
 

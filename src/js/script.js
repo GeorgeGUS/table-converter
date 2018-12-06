@@ -346,7 +346,7 @@ function convertData (data) {
 }
 
 // Функция конвертации данных из формата csv в json
-function csvJSON (csv, divider = ';') {
+function csvJSON (csv, divider) {
   // Забираем все строки, кроме пустых
   const lines = csv.split('\n').filter(str => `${str} `.trim() !== '')
 
@@ -367,10 +367,9 @@ function csvJSON (csv, divider = ';') {
   // return JSON.stringify(result); //JSON
 }
 
-const inputField = d3.select('#data-input')
-
 d3.select('#data-form').on('submit', function () {
   d3.event.preventDefault()
-  const inputData = inputField.property('value')
-  convertData(csvJSON(inputData))
+  const inputData = d3.select('#data-input').property('value')
+  const divider = d3.select('#data-divider').property('value')
+  convertData(csvJSON(inputData, divider))
 })
