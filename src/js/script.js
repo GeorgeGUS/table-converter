@@ -105,7 +105,9 @@ function renderInputTable (data) {
   const thead = table.append('thead')
   const tbody = table.append('tbody')
   const tfoot = table.append('tfoot')
+  console.dir(data)
   const columns = Object.keys(data[0])
+  
   const totalHours = data
     .reduce((acc, cur) => {
       return acc + timestrToSec(cur.duration) / 3600
@@ -346,11 +348,17 @@ function convertData (data) {
 }
 
 // Функция конвертации данных из формата csv в json
-function csvJSON (csv, divider) {
+function csvJSON (csv, div) {
   // Забираем все строки, кроме пустых
   const lines = csv.split('\n').filter(str => `${str} `.trim() !== '')
 
   const result = []
+  const divMap = {
+    'tab': '\t',
+    'semicolon': ';',
+    'comma': ',' 
+  }
+  const divider = divMap[div];
 
   const headers = lines[0].split(divider).map(d => d.trim())
   lines.splice(0, 1)
