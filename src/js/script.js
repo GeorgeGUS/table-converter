@@ -89,11 +89,11 @@ function copyTable(id) {
   try {
     const successful = document.execCommand('copy')
     const msg = successful
-      ? 'successful'
-      : 'unsuccessful'
-    alert('Copy table command was ' + msg)
+      ? ''
+      : 'не '
+    alert(`Таблица ${msg}скопирована`)
   } catch (err) {
-    alert('Oops, unable to copy')
+    alert(`При копировании произошла ошибка:\n${err}`)
   }
 
   window
