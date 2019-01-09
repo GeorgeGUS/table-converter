@@ -1,64 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" href="src/css/style.css" />
+  </head>
 
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<link rel="stylesheet" href="src/css/style.css">
-</head>
+  <body>
+    <input type="checkbox" id="form-switch" checked />
+    <label for="form-switch">Показать/скрыть форму ввода данных</label>
+    <span class="dividers"> </span>
+    <form name="dataForm" id="data-form" class="form" method="get">
+      <div class="row">
+        <textarea
+          id="data-input"
+          class="form-input"
+          cols="30"
+          rows="10"
+          placeholder="Вставьте данные в формате CSV"
+          required
+        ></textarea>
+        <div class="example">
+          <h2 class="example-title">
+            Пример входных данных (paзделитель - tab)
+          </h2>
+          <pre class="example-text">
+city	date	begin	duration
+Новинка 	14.12.2018	9:50:00	1:50:00
+Великий Новгород	17.12.2018	9:25:00	0:05:00
+Анциферово	17.12.2018	10:33:00	0:55:00
+Любытино	17.12.2018	10:05:00	3:25:00
+Висленев Остров	18.12.2018	10:05:00	0:10:00
+Валдай	18.12.2018	18:14:00	0:10:00
+Висленев Остров	20.12.2018	12:03:00	1:22:00
+</pre
+          >
+        </div>
+      </div>
 
-<body>
-	<input type="checkbox" id="form-switch" checked>
-	<label for="form-switch">Показать/скрыть форму ввода данных</label>
-	<span class="dividers">
+      <button class="form-btn" type="submit">Сконвертировать данные</button>
+    </form>
 
-	</span>
-	<form name="dataForm" id="data-form" class="form" method="get">
-		<p>
-      Выберите тип разделителя
-			<select name="divider" id="data-divider" required>
-				<option></option>
-				<option value="tab">\t (tab)</option>
-				<option value="semicolon">; (semicolon)</option>
-				<option value="comma">, (comma)</option>
-			</select>
-		</p>
-		<div class="row">
-			<textarea id="data-input" class="form-input" cols="30" rows="10" placeholder="Вставьте данные в формате CSV"
-			 required></textarea>
-			<div class="example">
-				<h2 class="example-title">Пример входных данных</h2>
-				<p class="example-text">
-					city;date;begin;duration<br>
-					Любытино;02.11.2018;12:39:00;0:10:00<br>
-					Новинка;04.11.2018;22:36:00;2:25:00<br>
-					Воронино;07.11.2018;11:50:00;1:54:00<br>
-					Яжелбицы;07.11.2018;15:22:00;0:29:00<br>
-				</p>
-				<p>Не забудьте указать правильный тип разделителя!</p>
-			</div>
-		</div>
+    <input type="checkbox" id="input-table-switch" />
+    <label for="input-table-switch"
+      >Показать/скрыть таблицу с входными данными</label
+    >
+    <p>
+      <input type="checkbox" id="output-table-switch" />
+      <label for="output-table-switch">
+        Показать полную/краткую таблицу с выходными данными (из краткой удобнее
+        копировать)
+      </label>
+    </p>
 
-		<button class="form-btn" type="submit">Сконвертировать данные</button>
-	</form>
+    <div class="tables">
+      <table id="input-table"></table>
+      <table id="output-table"></table>
+      <div class="buttons"></div>
+    </div>
 
-	<input type="checkbox" id="input-table-switch" checked>
-	<label for="input-table-switch">Показать/скрыть таблицу с входными данными</label>
-	<p>
-		<input type="checkbox" id="output-table-switch" checked>
-		<label for="output-table-switch">Показать полную/краткую таблицу с выходными данными</label>
-	</p>
-
-	<div class="tables">
-		<table id="input-table"></table>
-		<table id="output-table"></table>
-		<div class="buttons"></div>
-	</div>
-
-
-
-	<script src="src/js/d3.min.js"></script>
-	<script src="src/js/script.js"></script>
-</body>
-
+    <script src="src/js/d3.min.js"></script>
+    <script src="src/js/script.js"></script>
+  </body>
 </html>
