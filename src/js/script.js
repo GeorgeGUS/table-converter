@@ -1,273 +1,301 @@
 async function inputData() {
-  return await d3.json('src/data/table_input.json')
+  return await d3.json("src/data/table_input.json");
 }
 
 // Метод для получения последнего элемента массива
 if (!Array.prototype.last) {
-  Array.prototype.last = function () {
-    return this[this.length - 1]
-  }
+  Array.prototype.last = function() {
+    return this[this.length - 1];
+  };
 }
 
 // Временную строку в число секунд
 function timestrToSec(timestr) {
-  const parts = timestr.split(':')
-  return parts[0] * 3600 + parts[1] * 60 + + parts[2]
+  const parts = timestr.split(":");
+  return parts[0] * 3600 + parts[1] * 60 + +parts[2];
 }
 
 function roundToTwo(str) {
-  return + str.toFixed(2)
+  return +str.toFixed(2);
 }
 
-const HOURS_IN_DAY = 24
-const SEC_IN_HOUR = 3600
-const SEC_IN_DAY = HOURS_IN_DAY * SEC_IN_HOUR
+const HOURS_IN_DAY = 24;
+const SEC_IN_HOUR = 3600;
+const SEC_IN_DAY = HOURS_IN_DAY * SEC_IN_HOUR;
 const CITIES = [
-  'Анциферово',
-  'Батецкий',
-  'Ближнее Заполье',
-  'Боровичи',
-  'Валдай',
-  'Великий Новгород',
-  'Висленев Остров',
-  'Волот',
-  'Воронино',
-  'Глухачи',
-  'Залучье',
-  'Кабожа',
-  'Ильина Гора',
-  'Калитино',
-  'Лубенское',
-  'Лычково',
-  'Любытино',
-  'Малая Вишера',
-  'Мелехово',
-  'Мокрый Остров',
-  'Мошенское',
-  'Новинка',
-  'Новое Овсино',
-  'Переходы',
-  'Пестово',
-  'Полново',
-  'Пролетарий',
-  'Старая Каменка',
-  'Старая Русса',
-  'Тёсовский',
-  'Тугино',
-  'Угловка',
-  'Хвойная',
-  'Холм',
-  'Яжелбицы'
-]
+  "Анциферово",
+  "Батецкий",
+  "Ближнее Заполье",
+  "Боровичи",
+  "Валдай",
+  "Великий Новгород",
+  "Висленев Остров",
+  "Волот",
+  "Воронино",
+  "Глухачи",
+  "Залучье",
+  "Кабожа",
+  "Ильина Гора",
+  "Калитино",
+  "Лубенское",
+  "Лычково",
+  "Любытино",
+  "Малая Вишера",
+  "Мелехово",
+  "Мокрый Остров",
+  "Мошенское",
+  "Новинка",
+  "Новое Овсино",
+  "Переходы",
+  "Пестово",
+  "Полново",
+  "Пролетарий",
+  "Старая Каменка",
+  "Старая Русса",
+  "Тёсовский",
+  "Тугино",
+  "Угловка",
+  "Хвойная",
+  "Холм",
+  "Яжелбицы"
+];
 
 // время всей остановки
 function getDurInHour(time) {
-  return roundToTwo(timestrToSec(time) / SEC_IN_HOUR)
+  return roundToTwo(timestrToSec(time) / SEC_IN_HOUR);
 }
 
 // время от остановки на конец текущего дня
 function getHourOnThisDayEnd(time) {
-  return roundToTwo((SEC_IN_DAY - timestrToSec(time)) / SEC_IN_HOUR)
+  return roundToTwo((SEC_IN_DAY - timestrToSec(time)) / SEC_IN_HOUR);
 }
 
 // время от остановки на начало следующего дня
 function getHourOnNextDayStart(start, end) {
-  return roundToTwo((timestrToSec(start) + timestrToSec(end) - SEC_IN_DAY) / SEC_IN_HOUR)
+  return roundToTwo(
+    (timestrToSec(start) + timestrToSec(end) - SEC_IN_DAY) / SEC_IN_HOUR
+  );
 }
 
 function copyTable(id) {
-  window
-    .getSelection()
-    .removeAllRanges()
-  const table = document.getElementById(id)
-  const range = document.createRange()
-  range.selectNode(table)
-  window
-    .getSelection()
-    .addRange(range)
+  window.getSelection().removeAllRanges();
+  const table = document.getElementById(id);
+  const range = document.createRange();
+  range.selectNode(table);
+  window.getSelection().addRange(range);
 
   try {
-    const successful = document.execCommand('copy')
-    const msg = successful
-      ? ''
-      : 'не '
-    alert(`Таблица ${msg}скопирована`)
+    const successful = document.execCommand("copy");
+    const msg = successful ? "" : "не ";
+    alert(`Таблица ${msg}скопирована`);
   } catch (err) {
-    alert(`При копировании произошла ошибка:\n${err}`)
+    alert(`При копировании произошла ошибка:\n${err}`);
   }
 
-  window
-    .getSelection()
-    .removeAllRanges()
+  window.getSelection().removeAllRanges();
 }
 
 function copyOutputTable() {
-  copyTable('output-table')
+  copyTable("output-table");
+}
+
+// // Create new workbook and set props
+// const wb = XLSX.utils.book_new();
+// wb.Props = {
+//   Title: "Отчёт по цифре",
+//   Subject: "Отчёт",
+//   Author: "Георгий Гусаков",
+//   CreatedDate: new Date()
+// };
+
+// console.log("wb.Props.CreatedDate", wb.Props.CreatedDate);
+
+// console.log("wb.SheetNames before", wb.SheetNames);
+// // Create sheets with names
+// wb.SheetNames.push("Сведения ТВ_РВ");
+// wb.SheetNames.push("Сведения ТВ_РВ оборот");
+// console.log("wb.SheetNames after", wb.SheetNames);
+// // Create some test data in array of array
+// const wsData = [["hello", "world"]];
+// // Convert out data to sheet
+// const ws = XLSX.utils.aoa_to_sheet(wsData);
+// // Add this converted data to sheet
+// wb.Sheets["Сведения ТВ_РВ оборот"] = ws;
+// // Create output file
+// const wbOut = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+// // Convert binary file to octet
+function s2ab(s) {
+  var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+  var view = new Uint8Array(buf); //create uint8array as viewer
+  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff; //convert to octet
+  return buf;
+}
+
+// function saveTable() {
+//   saveAs(
+//     new Blob([s2ab(wbOut)], { type: "application/octet-stream" }),
+//     "отчёт по цифре.xlsx"
+//   );
+// }
+
+function saveTable() {
+  const table = document.getElementById("output-table");
+  var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet JS" });
+  const wbOut = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+  saveAs(
+    new Blob([s2ab(wbOut)], { type: "application/octet-stream" }),
+    "отчёт по цифре.xlsx"
+  );
 }
 
 // ===== ФУНКЦИИ ОТРИСОВКИ ТАБЛИЦ =====
 function renderInputTable(data) {
-  const table = d3
-    .select('#input-table')
-    .html('')
-  const thead = table.append('thead')
-  const tbody = table.append('tbody')
-  const tfoot = table.append('tfoot')
-  const columns = Object.keys(data[0])
+  const table = d3.select("#input-table").html("");
+  const thead = table.append("thead");
+  const tbody = table.append("tbody");
+  const tfoot = table.append("tfoot");
+  const columns = Object.keys(data[0]);
 
-  const totalHours = data.reduce((acc, cur) => {
-    return acc + timestrToSec(cur.duration) / 3600
-  }, 0).toFixed(2)
+  const totalHours = data
+    .reduce((acc, cur) => {
+      return acc + timestrToSec(cur.duration) / 3600;
+    }, 0)
+    .toFixed(2);
   thead
-    .append('tr')
-    .selectAll('th')
+    .append("tr")
+    .selectAll("th")
     .data(columns)
     .enter()
-    .append('th')
-    .text(head => head)
+    .append("th")
+    .text(head => head);
 
   const rows = tbody
-    .selectAll('tr')
+    .selectAll("tr")
     .data(data)
     .enter()
-    .append('tr')
-    .selectAll('td')
-    .data(function (row) {
-      return columns.map(function (column) {
-        return {value: row[column]}
-      })
+    .append("tr")
+    .selectAll("td")
+    .data(function(row) {
+      return columns.map(function(column) {
+        return { value: row[column] };
+      });
     })
     .enter()
-    .append('td')
-    .text(function (d) {
-      return d.value
-    })
+    .append("td")
+    .text(function(d) {
+      return d.value;
+    });
 
-  const footer = tfoot.append('tr')
+  const footer = tfoot.append("tr");
   footer
-    .append('td')
-    .attr('colspan', columns.length - 1)
-    .text('Итого (ч):')
-  footer
-    .append('td')
-    .text(totalHours)
+    .append("td")
+    .attr("colspan", columns.length - 1)
+    .text("Итого (ч):");
+  footer.append("td").text(totalHours);
 }
 
 function renderOutputPable(data, daysInMonth, isFull = true) {
-  const table = d3
-    .select('#output-table')
-    .html('')
-  const thead = table.append('thead')
-  const tbody = table.append('tbody')
-  const tfoot = table.append('tfoot')
+  const table = d3.select("#output-table").html("");
+  const thead = table.append("thead");
+  const tbody = table.append("tbody");
+  const tfoot = table.append("tfoot");
   const tHeads = [
-    'city', ...Array(daysInMonth)
+    "city",
+    ...Array(daysInMonth)
       .fill()
       .map((n, i) => ++i),
-    'Total',
-    'Sum'
-  ]
-  const cities = Object
-    .keys(data)
-    .sort()
+    "Total",
+    "Sum"
+  ];
+  const cities = Object.keys(data).sort();
   const rowsData = cities.map((city, i) => {
     const hours = Array(daysInMonth)
       .fill()
       .map((n, i) => {
-        const val = data[city][++i]
+        const val = data[city][++i];
         return {
-          color: val < 24
-            ? '#3f3'
-            : '#fff',
+          color: val < 24 ? "#3f3" : "#fff",
           value: val
-        }
-      })
+        };
+      });
     if (isFull) {
-      const hoursTotal = roundToTwo(hours.reduce((a, c) => a + c.value, 0))
-      const hoursSum = roundToTwo(HOURS_IN_DAY * daysInMonth - hoursTotal)
-      return [
-        cities[i], ...hours,
-        hoursTotal,
-        hoursSum
-      ]
+      const hoursTotal = roundToTwo(hours.reduce((a, c) => a + c.value, 0));
+      const hoursSum = roundToTwo(HOURS_IN_DAY * daysInMonth - hoursTotal);
+      return [cities[i], ...hours, hoursTotal, hoursSum];
     } else {
-      return hours
+      return hours;
     }
-  })
+  });
 
   if (isFull) {
     thead
-      .append('tr')
-      .selectAll('th')
+      .append("tr")
+      .selectAll("th")
       .data(tHeads)
       .enter()
-      .append('th')
-      .text(head => head)
+      .append("th")
+      .text(head => head);
   }
 
   tbody
-    .selectAll('tr')
+    .selectAll("tr")
     .data(rowsData)
     .enter()
-    .append('tr')
-    .selectAll('td')
-    .data(function (row) {
+    .append("tr")
+    .selectAll("td")
+    .data(function(row) {
       return row.map((r, i) => ({
-        color: typeof row[i] === 'object'
-          ? row[i].color
-          : '#fff',
-        value: typeof row[i] !== 'object'
-          ? row[i]
-          : roundToTwo(+ row[i].value)
-            .toString()
-            .replace('.', ',')
-      }))
+        color: typeof row[i] === "object" ? row[i].color : "#fff",
+        value:
+          typeof row[i] !== "object"
+            ? row[i]
+            : roundToTwo(+row[i].value)
+                .toString()
+                .replace(".", ",")
+      }));
     })
     .enter()
-    .append('td')
+    .append("td")
     .text(d => d.value)
-    .attr('style', d => 'background-color:' + d.color)
+    .attr("style", d => "background-color:" + d.color);
 
   if (isFull) {
-    const total = roundToTwo(rowsData.reduce((a, c) => a + c.last(), 0))
-    const footer = tfoot.append('tr')
+    const total = roundToTwo(rowsData.reduce((a, c) => a + c.last(), 0));
+    const footer = tfoot.append("tr");
     footer
-      .append('td')
-      .attr('colspan', tHeads.length - 1)
-      .text('Итого (ч):')
-    footer
-      .append('td')
-      .text(total)
+      .append("td")
+      .attr("colspan", tHeads.length - 1)
+      .text("Итого (ч):");
+    footer.append("td").text(total);
   }
 
-  const buttons = d3
-    .select('.buttons')
-    .html('')
+  const buttons = d3.select(".buttons").html("");
   if (!isFull) {
     buttons
-      .append('button')
-      .text('Скопировать таблицу')
-      .on('click', copyOutputTable)
+      .append("button")
+      .text("Скопировать таблицу")
+      .on("click", copyOutputTable);
+    buttons
+      .append("button")
+      .text("Скачать таблицу в формате Excel")
+      .on("click", saveTable);
   }
 }
 // ====================================
 
 function getDaysInMonth(data) {
-  const currDate = data[0]
-    .date
-    .split('.')
-  const [currMonth,
-    currYear] = [currDate[1], currDate[2]]
-  return new Date(currYear, currMonth, 0).getDate()
+  const currDate = data[0].date.split(".");
+  const [currMonth, currYear] = [currDate[1], currDate[2]];
+  return new Date(currYear, currMonth, 0).getDate();
 }
 
 // inputData().then(data => {
 function convertData(data) {
   // ===== ОТРИСОВКА ТАБЛИЦЫ С ВХОДНЫМИ ДАННЫМИ =====
-  renderInputTable(data)
+  renderInputTable(data);
   // ================================================
 
-  const DAYS_IN_MONTH = getDaysInMonth(data)
+  const DAYS_IN_MONTH = getDaysInMonth(data);
 
   // Создадим промежуточный объект с городами, в которых к каждой дате прикреплен
   // массив с началом и продолжительностью остановок за данную дату. Этот объект
@@ -275,159 +303,159 @@ function convertData(data) {
   // стоят не подряд во входном массиве, поскольку повторяющиеся города
   // объединяются в свойства объекта, а остановки накапливаются в свойствах-датах
   // внутри этих городов.
-  const middleData = {}
+  const middleData = {};
   // Заполним объект свойствами по названиям нас. пунктов с пустыми объектами
   // внутри
-  data.map(d => (middleData[d.city] = {}))
+  data.map(d => (middleData[d.city] = {}));
 
   for (d of data) {
-    const day = +d
-      .date
-      .slice(0, 2)
+    const day = +d.date.slice(0, 2);
     // Если в одной дате больше одной остановки
     if (middleData[d.city].hasOwnProperty(day)) {
-      middleData[d.city][day].push({beg: d.begin, dur: d.duration})
+      middleData[d.city][day].push({ beg: d.begin, dur: d.duration });
     } else {
       middleData[d.city][day] = [
         {
           beg: d.begin,
           dur: d.duration
         }
-      ]
+      ];
     }
   }
 
   // Сгенерируем выходной массив, свойствами которого будут города, внутри которых
   // будут объекты со свойствами-датами, содержащими начальное количество часов в
   // сутках.ы
-  const outputData = {}
+  const outputData = {};
   for (city of CITIES) {
-    outputData[city] = Object.assign({}, ...Array(DAYS_IN_MONTH).fill(HOURS_IN_DAY).map((a, i) => ({
-      [i + 1]: a
-    })))
+    outputData[city] = Object.assign(
+      {},
+      ...Array(DAYS_IN_MONTH)
+        .fill(HOURS_IN_DAY)
+        .map((a, i) => ({
+          [i + 1]: a
+        }))
+    );
   }
 
   //= ========= ОСНОВНОЙ ЦИКЛ ПРЕОБРАЗОВАНИЯ ==========
   for (city in middleData) {
     for (date in middleData[city]) {
       // thisDateErrors - массив объектов ошибок {beg, dur}
-      const thisDateErrors = middleData[city][date]
+      const thisDateErrors = middleData[city][date];
       // thisDateErrorsSum - сумма всех остановок за данную дату
-      let thisDateErrorsSum = 0
+      let thisDateErrorsSum = 0;
 
       // 1. Выбираем в качестве обрабатываемой остановки самую последнюю (даже если
       // она одна)
-      const thisError = thisDateErrors.last()
+      const thisError = thisDateErrors.last();
 
       // restHoursOnEnd - окончание остановки на следующие сутки
-      let restHoursOnEnd = getHourOnNextDayStart(thisError.beg, thisError.dur)
+      let restHoursOnEnd = getHourOnNextDayStart(thisError.beg, thisError.dur);
 
       // 2. Остановка выходит за пределы текущей даты?
       if (restHoursOnEnd > 0) {
         // 2.1 Выделить часть остановки на текущую дату restHoursOnStart - начало
         // остановки на конец текущих суток
-        const restHoursOnStart = getHourOnThisDayEnd(thisError.beg)
+        const restHoursOnStart = getHourOnThisDayEnd(thisError.beg);
 
         // 2.2.1 Сложить все остановки в текущей дате
         const errorsExceptLast = thisDateErrors
           .slice(0, thisDateErrors.length - 1)
-          .map(error => getDurInHour(error.dur))
-        thisDateErrorsSum = [
-          ...errorsExceptLast,
-          restHoursOnStart
-        ].reduce((a, c) => a + c)
+          .map(error => getDurInHour(error.dur));
+        thisDateErrorsSum = [...errorsExceptLast, restHoursOnStart].reduce(
+          (a, c) => a + c
+        );
 
         // nextDatesNumber - количество целых следующих дней после начала остановки
-        const nextDatesNumber = Math.floor(restHoursOnEnd / HOURS_IN_DAY)
+        const nextDatesNumber = Math.floor(restHoursOnEnd / HOURS_IN_DAY);
 
         // 3. Остановка занимает 3 и более дат?
         if (nextDatesNumber > 0) {
           // 3.1 Обнуляем часы во всех промежуточных днях
           for (let i = 1; i <= nextDatesNumber; i++) {
-            outputData[city][+ date + i] = 0
+            outputData[city][+date + i] = 0;
           }
-          restHoursOnEnd = restHoursOnEnd - nextDatesNumber * HOURS_IN_DAY
+          restHoursOnEnd = restHoursOnEnd - nextDatesNumber * HOURS_IN_DAY;
         }
         // 3.2 Вычитаем из последнего дня остаток остановки
-        const nextDate = +date + nextDatesNumber + 1
-        outputData[city][nextDate] = roundToTwo(outputData[city][nextDate] - restHoursOnEnd)
+        const nextDate = +date + nextDatesNumber + 1;
+        outputData[city][nextDate] = roundToTwo(
+          outputData[city][nextDate] - restHoursOnEnd
+        );
       } else {
         // 2.2.2 Сложить все остановки в текущей дате
-        thisDateErrorsSum = thisDateErrors.reduce((a, c) => a + getDurInHour(c.dur), 0)
+        thisDateErrorsSum = thisDateErrors.reduce(
+          (a, c) => a + getDurInHour(c.dur),
+          0
+        );
       }
 
       // 4. Вычесть из текущей даты все остановки
-      outputData[city][date] = roundToTwo(outputData[city][date] - thisDateErrorsSum)
+      outputData[city][date] = roundToTwo(
+        outputData[city][date] - thisDateErrorsSum
+      );
     }
   }
   // = ================================================= ===== ОТРИСОВКА ТАБЛИЦЫ С
   // ВЫХОДНЫМИ ДАННЫМИ =====
-  renderOutputPable(outputData, DAYS_IN_MONTH, false)
+  renderOutputPable(outputData, DAYS_IN_MONTH, false);
 
-  d3
-    .select('#output-table-switch')
-    .on('change', function () {
-      const checked = d3.event.target.checked
-      renderOutputPable(outputData, DAYS_IN_MONTH, checked)
-    })
+  d3.select("#output-table-switch").on("change", function() {
+    const checked = d3.event.target.checked;
+    renderOutputPable(outputData, DAYS_IN_MONTH, checked);
+  });
 }
 
 // Функция конвертации данных из формата csv в json
 function csvJSON(csv) {
   // Забираем все строки, кроме пустых
-  const lines = csv
-    .split('\n')
-    .filter(str => `${str} `.trim() !== '')
+  const lines = csv.split("\n").filter(str => `${str} `.trim() !== "");
 
-  const result = []
-  let divider = '';
+  const result = [];
+  let divider = "";
 
   try {
     divider = lines[0].match(/\W/)[0]; // Автоматический распознаватель разделителя
   } catch (e) {
-    alert(`Входные данные заданы неверно.\nПравильный формат данных смотри в примере.`)
-    return
+    alert(
+      `Входные данные заданы неверно.\nПравильный формат данных смотри в примере.`
+    );
+    return;
   }
-  const headers = lines[0]
-    .split(divider)
-    .map(d => d.trim())
+  const headers = lines[0].split(divider).map(d => d.trim());
 
-  if (headers[0] !== 'city') {
-    alert(`Шапка входных данных задана неверно.\nПравильный формат шапки смотри в примере.`)
-    return
+  if (headers[0] !== "city") {
+    alert(
+      `Шапка входных данных задана неверно.\nПравильный формат шапки смотри в примере.`
+    );
+    return;
   }
 
-  lines.splice(0, 1)
+  lines.splice(0, 1);
   if (lines.length === 0) {
-    alert('Данные отстутствуют')
-    return
+    alert("Данные отстутствуют");
+    return;
   }
-  lines
-    .forEach(function (line) {
-      const obj = {}
-      const currentline = line.split(divider)
-      headers.forEach(function (header, i) {
-        obj[header] = currentline[i].trim()
-      })
-      result.push(obj)
-    })
+  lines.forEach(function(line) {
+    const obj = {};
+    const currentline = line.split(divider);
+    headers.forEach(function(header, i) {
+      obj[header] = currentline[i].trim();
+    });
+    result.push(obj);
+  });
 
-  return result // JavaScript object
+  return result; // JavaScript object
   // return JSON.stringify(result); //JSON
 }
 
 // Забираем данные из поля ввода и конвертируем в таблицу
-d3
-  .select('#data-form')
-  .on('submit', function () {
-    d3
-      .event
-      .preventDefault()
-    const inputData = d3
-      .select('#data-input')
-      .property('value')
-    const formattedData = csvJSON(inputData)
-    if (formattedData) {
-      convertData(formattedData)
-    }
-  })
+d3.select("#data-form").on("submit", function() {
+  d3.event.preventDefault();
+  const inputData = d3.select("#data-input").property("value");
+  const formattedData = csvJSON(inputData);
+  if (formattedData) {
+    convertData(formattedData);
+  }
+});
